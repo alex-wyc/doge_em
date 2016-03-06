@@ -1,0 +1,12 @@
+canvas {
+    border-style: solid;
+    border-width: 5px;
+}
+
+.text-up {
+    vertical-align: text-top;
+}
+
+#space {
+    background-color: black;
+}

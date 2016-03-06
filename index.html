@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gravity Simulation</title>
+        <link rel='stylesheet' type='text/css' href='main.css'>
+    </head>
+    <body>
+        <h1>Star-System Simulations</h1>
+        <table>
+            <tr>
+                <th>Controls</th>
+                <th></th>
+                <th>Planets</th>
+            </tr>
+            <tr>
+                <td class='text-up'>
+                    <hr>
+                    Center of Mass: <input type='text'
+                    value='1' id='cmass' size='1'>M&#9737
+                    <br>
+                    Planet Mass: <input type='text' value='1' id='pmass'
+                    size='1'>M&#9793
+                    <br>
+                    <hr>
+                    <button id='changeCenter'>Place Center of Mass</button>
+                    <hr>
+                    <button id='start' disabled>Start</button>
+                    <button id='stop' disabled>Stop</button>
+                    <button id='clear' disabled>Clear</button>
+                </td>
+
+                <td>
+                    <canvas height='500px' width='500px' id='space' ></canvas>
+                </td>
+
+                <td class='text-up' id='planets'>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
