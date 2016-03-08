@@ -19,7 +19,7 @@ var vely = 0;
 var anim = 0;
 var inc = 1;
 var img = new Image();
-img.src = "puck.bmp";
+img.src = "doge.png";
 //clear canvas
 
 function stopCanvas(){
