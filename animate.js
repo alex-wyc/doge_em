@@ -19,39 +19,39 @@ var vely = 0;
 var anim = 0;
 var inc = 1;
 var img = new Image();
-img.src = "doge.png";
+img.src = "dojocat.png";
 //clear canvas
 
 function stopCanvas(){
-	cancelAnimationFrame(anim);
+    cancelAnimationFrame(anim);
 }
 //left = 37 up = 38 right = 39 down = 40
 function ctrlpuck(e){
-	
-	if (e.keyCode == 39)
-	velx += inc ;
-	if (e.keyCode == 37) 
-	velx -= inc;
-	if (e.keyCode == 38) 
-	vely -= inc;
-	if (e.keyCode == 40) 
-	vely += inc;
-	
+
+    if (e.keyCode == 39)
+        velx += inc ;
+    if (e.keyCode == 37) 
+        velx -= inc;
+    if (e.keyCode == 38) 
+        vely -= inc;
+    if (e.keyCode == 40) 
+        vely += inc;
+
 }
+
 function everySec(e){
-ctx.clearRect(0,0,600,600);
-ctx.beginPath();
-ctx.drawImage(img, x, y, 50, 50);
-ctx.closePath();
-ctx.stroke();
-x += velx;
-y += vely;
-anim = requestAnimationFrame(everySec);
+    ctx.clearRect(0,0,600,600);
+    ctx.beginPath();
+    ctx.drawImage(img, x, y, 50, 50);
+    ctx.closePath();
+    ctx.stroke();
+    if ((x >= 600 && velx > 0) || (x <= 0 && velx < 0)) velx = -velx;
+    if ((y >= 600 && vely > 0) || (y <= 0 && vely < 0)) vely = -vely
+    x += velx;
+    y += vely;
+    anim = requestAnimationFrame(everySec);
 }
 
 document.addEventListener("keydown", ctrlpuck);
 start.addEventListener("click", everySec);
 stop.addEventListener("click", stopCanvas);
-
-
-
