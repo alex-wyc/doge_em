@@ -17,7 +17,7 @@ var vely = 0;
 
 //variable for animation frame
 var anim = 0;
-var inc = 1;
+var inc = 0.3;
 var img = new Image();
 img.src = "dojocat.png";
 //clear canvas
@@ -40,13 +40,13 @@ function ctrlpuck(e){
 }
 
 function everySec(e){
-    ctx.clearRect(0,0,600,600);
+    ctx.clearRect(0,0,500,500);
     ctx.beginPath();
-    ctx.drawImage(img, x, y, 50, 50);
+    ctx.drawImage(img, x, y, 70, 70);
     ctx.closePath();
     ctx.stroke();
-    if ((x >= 600 && velx > 0) || (x <= 0 && velx < 0)) velx = -velx;
-    if ((y >= 600 && vely > 0) || (y <= 0 && vely < 0)) vely = -vely
+    if ((x >= (500 - 70) && velx > 0) || (x <= 0 && velx < 0)) velx = -velx;
+    if ((y >= (500 - 70) && vely > 0) || (y <= 0 && vely < 0)) vely = -vely
     x += velx;
     y += vely;
     anim = requestAnimationFrame(everySec);
