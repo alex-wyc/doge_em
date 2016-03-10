@@ -71,8 +71,8 @@ function everySec(e){
     ctx.drawImage(dojocat, x, y, image_size, image_size);
     ctx.closePath();
     ctx.stroke();
-    if ((x >= (canvas_size - image_size) && velx > 0) || (x <= 0 && velx < 0)) velx = -velx;
-    if ((y >= (canvas_size - image_size) && vely > 0) || (y <= 0 && vely < 0)) vely = -vely
+    if ((x >= (canvas_size - image_size) && velx > 0) || (x <= 0 && velx < 0)) velx = -velx / 2;
+    if ((y >= (canvas_size - image_size) && vely > 0) || (y <= 0 && vely < 0)) vely = -vely / 2;
     x += velx;
     y += vely;
     anim = requestAnimationFrame(everySec);
