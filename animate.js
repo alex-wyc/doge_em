@@ -54,7 +54,7 @@ function stopCanvas(){
 }
 
 //left = 37 up = 38 right = 39 down = 40
-function ctrlpuck(e){
+function ctrl(e){
     if (e.keyCode == 39)
         velx += inc ;
     if (e.keyCode == 37) 
@@ -63,6 +63,11 @@ function ctrlpuck(e){
         vely -= inc;
     if (e.keyCode == 40) 
         vely += inc;
+}
+
+// collision --> true/false if distance within collision radius
+function collision(x1, y1, x2, y2) {
+    return (x2 - x1) ** 2 + (y2 - y1) ** 2 <= collision_radius ** 2;
 }
 
 function everySec(e){
@@ -78,6 +83,6 @@ function everySec(e){
     anim = requestAnimationFrame(everySec);
 }
 
-document.addEventListener("keydown", ctrlpuck);
+document.addEventListener("keydown", ctrl);
 start.addEventListener("click", everySec);
 stop.addEventListener("click", stopCanvas);
