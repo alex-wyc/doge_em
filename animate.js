@@ -3,6 +3,7 @@ var p = document.getElementById("playground");
 var stop = document.getElementById("pause");
 var ctx = p.getContext("2d");
 var start = document.getElementById("start");
+var clear = document.getElementById('clear');
 
 var canvas_width = p.getAttribute('width');
 var canvas_height = p.getAttribute('height') - 50;
@@ -23,27 +24,66 @@ var dojocat = new Image();
 dojocat.src = "dojocat.png";
 
 dojocat.onload = function() {
-    ctx.drawImage(dojocat, x - collision_radius, y - collision_radius, image_size, image_size);
+    init();
 };
 
 var doge = new Image();
 doge.src = "doge.png"
 
 doge.onload = function() {
-    ctx.drawImage(doge, 70, 50, image_size, image_size);
-    ctx.drawImage(doge, 210, 50, image_size, image_size);
-    ctx.drawImage(doge, 350, 50, image_size, image_size);
+    init();
+};
+
+var dogeList = new Array();
+
+function Doge(x, y, dx, dy) {
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
+}
+
+//dogeList.push(new Doge(x, y, dx, dy));
+
+function levelUp() {
+    dogeList.push(new Doge(Math.random() * canvas_width,
+                           Math.random() * canvas_height,
+                           Math.random() * 3,
+                           Math.random() * 3));
 }
 
 var image_size = 70;
 var collision_radius = image_size / 2;
 
+var score = 0;
 var counter = 0;
 var health = 1000;
 var max_health = health;
 var damage = 5;
 
-function initScreen() {
+function init() {
+
+    stopCanvas();
+
+    dogeList = [];
+
+    velx = 0;
+    vely = 0;
+    x = canvas_width / 2;
+    y = canvas_height / 2;
+    counter = 0;
+    health = max_health;
+    score = 0;
+
+    for (var i = 0 ; i < 5 ; i++) {
+        levelUp();
+    }
+
+    ctx.clearRect(0,0,canvas_width,canvas_height);
+ctx.drawImage(dojocat, x - collision_radius, y - collision_radius, image_size, image_size);
+    ctx.drawImage(doge, 70, 50, image_size, image_size);
+    ctx.drawImage(doge, 210, 50, image_size, image_size);
+    ctx.drawImage(doge, 350, 50, image_size, image_size);
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, canvas_height, canvas_width, 50);
@@ -56,33 +96,12 @@ function initScreen() {
     ctx.fillRect(155, canvas_height + 7, (canvas_width - 155 - 20) * health / max_health, 37);
 }
 
-initScreen();
-
-function Doge(x, y, dx, dy) {
-    this.x = x;
-    this.y = y;
-    this.dx = dx;
-    this.dy = dy;
-}
-
-var dogeList = new Array();
-//dogeList.push(new Doge(x, y, dx, dy));
-
-function levelUp() {
-    dogeList.push(new Doge(Math.random() * canvas_width,
-                           Math.random() * canvas_height,
-                           Math.random() * 3,
-                           Math.random() * 3));
-}
-
-for (var i = 0 ; i < 5 ; i++) {
-    levelUp();
-}
-
 //clear canvas
 
 function stopCanvas(){
     cancelAnimationFrame(anim);
+    start.disabled = false;
+    stop.disabled = true;
 }
 
 //left = 37 up = 38 right = 39 down = 40
@@ -106,16 +125,38 @@ function draw_doge(a_doge) {
     ctx.drawImage(doge, a_doge.x, a_doge.y, image_size, image_size);
 }
 
+function sortAndAppendList(ul, new_el) {
+    var li = document.createElement('li');
+    li.appendChild(document.createTextNode(new_el));
+    ul.appendChild(li);
+
+    var list_els = Array.prototype.slice.call(ul.children, 0);
+    while (ul.firstChild) {
+        ul.removeChild(ul.firstChild);
+    }
+
+    list_els.sort(function(a, b) {
+        return parseInt(b.childNodes[0].data, 10) - parseInt(a.childNodes[0].data, 10);
+    });
+
+    for (var i = 0 ; i < list_els.length ; i++) {
+        ul.appendChild(list_els[i]);
+    }
+}
+
 function everySec(e){
+
+    start.disabled = true;
+    stop.disabled = false;
 
     ctx.clearRect(0,0,canvas_width,canvas_height);
 
     ctx.fillStyle = 'black';
-    ctx.fillStyle = 'black';
     ctx.fillRect(0, canvas_height, canvas_width, 50);
-    ctx.font = '30px Comic Sans MS';
-    ctx.fillStyle = 'white';
     ctx.textAligh = 'center';
+    ctx.font = '30px Comic Sans MS';
+    ctx.fillText("SCORE: " + score, 0, 30);
+    ctx.fillStyle = 'white';
     ctx.fillText("HEALTH", 20, canvas_height + 35);
     ctx.fillStyle = 'red';
     ctx.fillRect(155, canvas_height + 7, (canvas_width - 155 - 20) * health / max_health, 37);
@@ -132,7 +173,8 @@ function everySec(e){
             health -= damage;
             if (health <= 0) {
                 alert("You died....");
-                stopCanvas();
+                sortAndAppendList(document.getElementById('scoreboard'), score);
+                init();
                 return;
             }
         }
@@ -143,6 +185,8 @@ function everySec(e){
     if ((y >= (canvas_height - image_size) && vely > 0) || (y <= 0 && vely < 0)) vely = -vely / 2;
     x += velx;
     y += vely;
+
+    score += dogeList.length;
 
     counter++;
     if (counter % 800 == 0) {
@@ -155,3 +199,4 @@ function everySec(e){
 document.addEventListener("keydown", ctrl);
 start.addEventListener("click", everySec);
 stop.addEventListener("click", stopCanvas);
+clear.addEventListener('click', init);
