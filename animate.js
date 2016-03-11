@@ -36,6 +36,8 @@ doge.onload = function() {
 
 var dogeList = new Array();
 
+var playing = false;
+
 function Doge(x, y, dx, dy) {
     this.x = x;
     this.y = y;
@@ -92,7 +94,8 @@ ctx.drawImage(dojocat, x - collision_radius, y - collision_radius, image_size, i
     ctx.fillText("HOW MANY OF THEM CAN YOU DOGE?", 30, 150);
     ctx.fillText("Instructions:", 70, 300);
     ctx.fillText("Arrow Keys to Accelerate", 150, 340);
-    ctx.fillText("Dodge to DOGES!!!", 230, 380);
+    ctx.fillText("Space Bar to Start/Pause", 230, 380);
+    ctx.fillText("Dodge to DOGES!!!", 310, 420);
     ctx.fillStyle = 'white';
     ctx.fillText("HEALTH", 20, canvas_height + 35);
     ctx.fillStyle = 'red';
@@ -105,6 +108,7 @@ function stopCanvas(){
     cancelAnimationFrame(anim);
     start.disabled = false;
     stop.disabled = true;
+    playing = false;
 }
 
 //left = 37 up = 38 right = 39 down = 40
@@ -117,6 +121,14 @@ function ctrl(e){
         vely -= inc;
     if (e.keyCode == 40) 
         vely += inc;
+    if (e.keyCode == 32) {
+        if (playing) {
+            stopCanvas();
+        }
+        else {
+            everySec();
+        }
+    }
 }
 
 // collision --> true/false if distance within collision radius
@@ -148,6 +160,8 @@ function sortAndAppendList(ul, new_el) {
 }
 
 function everySec(e){
+
+    playing = true;
 
     start.disabled = true;
     stop.disabled = false;
