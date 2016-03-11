@@ -8,10 +8,12 @@ var clear = document.getElementById('clear');
 var canvas_width = p.getAttribute('width');
 var canvas_height = p.getAttribute('height') - 50;
 
+var image_size = 70;
+var collision_radius = image_size / 2;
 //style of canvas
 //x and y coordinates of dvd
-var x = canvas_width / 2;
-var y = canvas_height / 2;
+var x = canvas_width / 2 - collision_radius;
+var y = canvas_height / 2 - collision_radius;
 
 //x and y velocities of dvd
 var velx = 0;
@@ -26,6 +28,14 @@ dojocat.src = "dojocat.png";
 dojocat.onload = function() {
     init();
 };
+
+var score = 0;
+var counter = 0;
+var health = 1000;
+var max_health = health;
+var damage = 5;
+
+
 
 var doge = new Image();
 doge.src = "doge.png"
@@ -54,15 +64,6 @@ function levelUp() {
                            Math.random() * 3));
 }
 
-var image_size = 70;
-var collision_radius = image_size / 2;
-
-var score = 0;
-var counter = 0;
-var health = 1000;
-var max_health = health;
-var damage = 5;
-
 function init() {
 
     stopCanvas();
@@ -71,8 +72,8 @@ function init() {
 
     velx = 0;
     vely = 0;
-    x = canvas_width / 2;
-    y = canvas_height / 2;
+    x = canvas_width / 2 - collision_radius;
+    y = canvas_height / 2 - collision_radius;
     counter = 0;
     health = max_health;
     score = 0;
@@ -82,7 +83,7 @@ function init() {
     }
 
     ctx.clearRect(0,0,canvas_width,canvas_height);
-ctx.drawImage(dojocat, x - collision_radius, y - collision_radius, image_size, image_size);
+    ctx.drawImage(dojocat, x, y, image_size, image_size);
     ctx.drawImage(doge, 70, 50, image_size, image_size);
     ctx.drawImage(doge, 210, 50, image_size, image_size);
     ctx.drawImage(doge, 350, 50, image_size, image_size);
