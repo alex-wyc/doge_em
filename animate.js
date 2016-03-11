@@ -90,6 +90,9 @@ ctx.drawImage(dojocat, x - collision_radius, y - collision_radius, image_size, i
     ctx.font = '30px Comic Sans MS';
     ctx.textAligh = 'center';
     ctx.fillText("HOW MANY OF THEM CAN YOU DOGE?", 30, 150);
+    ctx.fillText("Instructions:", 70, 300);
+    ctx.fillText("Arrow Keys to Accelerate", 150, 340);
+    ctx.fillText("Dodge to DOGES!!!", 230, 380);
     ctx.fillStyle = 'white';
     ctx.fillText("HEALTH", 20, canvas_height + 35);
     ctx.fillStyle = 'red';
