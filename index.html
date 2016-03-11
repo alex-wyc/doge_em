@@ -1,19 +1,32 @@
 <html>
-<body>
-<h1> Doge Em </h1>
-<canvas style = "border-style:solid; border-color: black" height = "550" width =
-    "700" id = "playground">
-</canvas>
-<br>
-<br>
+    <head>
+        <title>Doge 'em</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>
+                    <canvas style = "border-style:solid; border-color: black" height = "550" width =
+                    "700" id = "playground">
+                    </canvas>   
+                </td>
+                <td style='padding:20px;' valign='top'>
+                    <h2>High Scores</h2>
+                    <ol id='scoreboard'>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <br>
 
-<button id = "stop"> stop </button>
-<button id = "start"> start </button>
+        <button id = "start"> start </button>
+        <button id = "pause"> pause </button>
+        <button id = 'clear'> clear </button>
 
-</body>
+    </body>
 
-<script src = "animate.js">
-</script>
+    <script src = "animate.js"></script>
 
 
 </html>

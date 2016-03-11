@@ -1,6 +1,6 @@
 //adds the html stuff variables
 var p = document.getElementById("playground");
-var stop = document.getElementById("stop");
+var stop = document.getElementById("pause");
 var ctx = p.getContext("2d");
 var start = document.getElementById("start");
 
@@ -22,8 +22,18 @@ var inc = 0.3;
 var dojocat = new Image();
 dojocat.src = "dojocat.png";
 
+dojocat.onload = function() {
+    ctx.drawImage(dojocat, x - collision_radius, y - collision_radius, image_size, image_size);
+};
+
 var doge = new Image();
 doge.src = "doge.png"
+
+doge.onload = function() {
+    ctx.drawImage(doge, 70, 50, image_size, image_size);
+    ctx.drawImage(doge, 210, 50, image_size, image_size);
+    ctx.drawImage(doge, 350, 50, image_size, image_size);
+}
 
 var image_size = 70;
 var collision_radius = image_size / 2;
@@ -33,18 +43,20 @@ var health = 1000;
 var max_health = health;
 var damage = 5;
 
-ctx.drawImage(dojocat, x, y, image_size, image_size);
+function initScreen() {
 
-ctx.fillStyle = 'black';
-ctx.fillRect(0, canvas_height, canvas_width, 50);
-ctx.font = '30px Comic Sans MS';
-ctx.fillStyle = 'white';
-ctx.textAligh = 'center';
-ctx.fillText("HEALTH", 20, canvas_height + 35);
-ctx.fillStyle = 'red';
-ctx.fillRect(155, canvas_height + 7, (canvas_width - 155 - 20) * health / max_health, 37);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, canvas_height, canvas_width, 50);
+    ctx.font = '30px Comic Sans MS';
+    ctx.textAligh = 'center';
+    ctx.fillText("HOW MANY OF THEM CAN YOU DOGE?", 30, 150);
+    ctx.fillStyle = 'white';
+    ctx.fillText("HEALTH", 20, canvas_height + 35);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(155, canvas_height + 7, (canvas_width - 155 - 20) * health / max_health, 37);
+}
 
-
+initScreen();
 
 function Doge(x, y, dx, dy) {
     this.x = x;
