@@ -4,15 +4,13 @@ var stop = document.getElementById("stop");
 var ctx = p.getContext("2d");
 var start = document.getElementById("start");
 
-var canvas_size = p.getAttribute('height');
+var canvas_width = p.getAttribute('width');
+var canvas_height = p.getAttribute('height') - 50;
 
 //style of canvas
-ctx.fillStyle = "#000000";
-ctx.strokeStyle = "#000000";
-
 //x and y coordinates of dvd
-var x = 0;
-var y = 0;
+var x = canvas_width / 2;
+var y = canvas_height / 2;
 
 //x and y velocities of dvd
 var velx = 0;
@@ -30,6 +28,24 @@ doge.src = "doge.png"
 var image_size = 70;
 var collision_radius = image_size / 2;
 
+var counter = 0;
+var health = 1000;
+var max_health = health;
+var damage = 5;
+
+ctx.drawImage(dojocat, x, y, image_size, image_size);
+
+ctx.fillStyle = 'black';
+ctx.fillRect(0, canvas_height, canvas_width, 50);
+ctx.font = '30px Comic Sans MS';
+ctx.fillStyle = 'white';
+ctx.textAligh = 'center';
+ctx.fillText("HEALTH", 20, canvas_height + 35);
+ctx.fillStyle = 'red';
+ctx.fillRect(155, canvas_height + 7, (canvas_width - 155 - 20) * health / max_health, 37);
+
+
+
 function Doge(x, y, dx, dy) {
     this.x = x;
     this.y = y;
@@ -39,12 +55,16 @@ function Doge(x, y, dx, dy) {
 
 var dogeList = new Array();
 //dogeList.push(new Doge(x, y, dx, dy));
-//
+
 function levelUp() {
-    dogeList.push(new Doge(Math.random() * canvas_size,
-                           Math.random() * canvas_size,
+    dogeList.push(new Doge(Math.random() * canvas_width,
+                           Math.random() * canvas_height,
                            Math.random() * 3,
                            Math.random() * 3));
+}
+
+for (var i = 0 ; i < 5 ; i++) {
+    levelUp();
 }
 
 //clear canvas
@@ -67,19 +87,56 @@ function ctrl(e){
 
 // collision --> true/false if distance within collision radius
 function collision(x1, y1, x2, y2) {
-    return (x2 - x1) ** 2 + (y2 - y1) ** 2 <= collision_radius ** 2;
+    return Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2) <= Math.pow(collision_radius, 2);
+}
+
+function draw_doge(a_doge) {
+    ctx.drawImage(doge, a_doge.x, a_doge.y, image_size, image_size);
 }
 
 function everySec(e){
-    ctx.clearRect(0,0,canvas_size,canvas_size);
-    ctx.beginPath();
+
+    ctx.clearRect(0,0,canvas_width,canvas_height);
+
+    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, canvas_height, canvas_width, 50);
+    ctx.font = '30px Comic Sans MS';
+    ctx.fillStyle = 'white';
+    ctx.textAligh = 'center';
+    ctx.fillText("HEALTH", 20, canvas_height + 35);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(155, canvas_height + 7, (canvas_width - 155 - 20) * health / max_health, 37);
+
+    for (var i = 0 ; i < dogeList.length ; i++) {
+        var curr = dogeList[i];
+        draw_doge(curr);
+        if ((curr.x >= (canvas_width - image_size) && curr.dx > 0) || (curr.x <= 0 && curr.dx < 0)) curr.dx = -curr.dx;
+        if ((curr.y >= (canvas_height - image_size) && curr.dy > 0) || (curr.y <= 0 && curr.dy < 0)) curr.dy = -curr.dy;
+        curr.x += curr.dx;
+        curr.y += curr.dy;
+
+        if (collision(curr.x, curr.y, x, y)) {
+            health -= damage;
+            if (health <= 0) {
+                alert("You died....");
+                stopCanvas();
+                return;
+            }
+        }
+    }
+
     ctx.drawImage(dojocat, x, y, image_size, image_size);
-    ctx.closePath();
-    ctx.stroke();
-    if ((x >= (canvas_size - image_size) && velx > 0) || (x <= 0 && velx < 0)) velx = -velx / 2;
-    if ((y >= (canvas_size - image_size) && vely > 0) || (y <= 0 && vely < 0)) vely = -vely / 2;
+    if ((x >= (canvas_width - image_size) && velx > 0) || (x <= 0 && velx < 0)) velx = -velx / 2;
+    if ((y >= (canvas_height - image_size) && vely > 0) || (y <= 0 && vely < 0)) vely = -vely / 2;
     x += velx;
     y += vely;
+
+    counter++;
+    if (counter % 800 == 0) {
+        levelUp();
+    }
+
     anim = requestAnimationFrame(everySec);
 }
 
